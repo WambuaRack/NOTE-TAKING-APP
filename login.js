@@ -3,14 +3,15 @@ import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopu
 
 // Your Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
+    apiKey: "AIzaSyCNKYOgvkAIJLxm80yfoLmrKLMxgBVqef8",
+    authDomain: "notes-taking-app-29880.firebaseapp.com",
+    projectId: "notes-taking-app-29880",
+    storageBucket: "notes-taking-app-29880.appspot.com",
+    messagingSenderId: "418241865266",
+    appId: "1:418241865266:web:9b6512061579716688be2b",
+    measurementId: "G-01BWRWV1FF"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
