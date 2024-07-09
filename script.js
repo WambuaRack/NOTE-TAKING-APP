@@ -57,16 +57,3 @@ document.getElementById('github-signin').addEventListener('click', () => {
             console.error("Error signing in with GitHub:", error);
         });
 });
-
-// Handle Apple sign in
-document.getElementById('apple-signin').addEventListener('click', () => {
-    const provider = new AppleAuthProvider();
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            // Signed in
-            window.location.href = 'login.html';
-        })
-        .catch((error) => {
-            console.error("Error signing in with Apple:", error);
-        });
-});
