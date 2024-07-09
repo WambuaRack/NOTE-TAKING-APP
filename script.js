@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, AppleAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,55 +14,59 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const auth = getAuth(app);
 
-// DOM Elements
-const noteInput = document.getElementById('note-input');
-const addNoteBtn = document.getElementById('add-note-btn');
-const notesList = document.getElementById('notes-list');
+// Handle email/password sign in
+document.getElementById('signin-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-// Display Notes from Firestore
-async function displayNotes() {
-    const querySnapshot = await getDocs(collection(db, "notes"));
-    notesList.innerHTML = '';
-    querySnapshot.forEach((doc) => {
-        const noteItem = document.createElement('div');
-        noteItem.classList.add('note-item');
-        noteItem.innerHTML = `
-            <p>${doc.data().text}</p>
-            <button onclick="deleteNote('${doc.id}')">Delete</button>
-        `;
-        notesList.appendChild(noteItem);
-    });
-}
-
-// Add Note to Firestore
-addNoteBtn.addEventListener('click', async() => {
-    const noteText = noteInput.value.trim();
-    if (noteText !== '') {
-        await addDoc(collection(db, "notes"), {
-            text: noteText,
-            timestamp: new Date()
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in
+            window.location.href = 'login.html';
+        })
+        .catch((error) => {
+            console.error("Error signing in:", error);
         });
-        noteInput.value = '';
-        displayNotes();
-    }
 });
 
-// Delete Note from Firestore
-window.deleteNote = async function(id) {
-    await deleteDoc(doc(db, "notes", id));
-    displayNotes();
-};
-
-// Authentication (Optional)
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        displayNotes();
-    } else {
-        signInAnonymously(auth).catch((error) => {
-            console.error("Error signing in anonymously:", error);
+// Handle Google sign in
+document.getElementById('google-signin').addEventListener('click', () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // Signed in
+            window.location.href = 'login.html';
+        })
+        .catch((error) => {
+            console.error("Error signing in with Google:", error);
         });
-    }
+});
+
+// Handle GitHub sign in
+document.getElementById('github-signin').addEventListener('click', () => {
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // Signed in
+            window.location.href = 'login.html';
+        })
+        .catch((error) => {
+            console.error("Error signing in with GitHub:", error);
+        });
+});
+
+// Handle Apple sign in
+document.getElementById('apple-signin').addEventListener('click', () => {
+    const provider = new AppleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // Signed in
+            window.location.href = 'login.html';
+        })
+        .catch((error) => {
+            console.error("Error signing in with Apple:", error);
+        });
 });
